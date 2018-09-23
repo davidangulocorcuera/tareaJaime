@@ -16,7 +16,7 @@ public class Test extends Model {
         String opcion = sc.next();
         opcion = opcion.toLowerCase();
         if (opcion.equals("leerfichero") || opcion.equals("escribirfichero") || opcion.equals("salir") ||
-                opcion.equals("leerbbdd")|| opcion.equals("escribirbbdd")) {
+                opcion.equals("leerbbdd")|| opcion.equals("escribirbbdd") || opcion.equals("borrarpersona")) {
             switch (opcion) {
                 case "escribirfichero":
                     try {
@@ -68,6 +68,11 @@ public class Test extends Model {
                 default:
                     System.out.println("fallo en el sistema , adiós");
                 case "salir":
+                    break;
+                case "borrarpersona":
+                    System.out.println("escribe el id de la persona que quieres eliminar");
+                    int id =sc.nextInt();
+                    app.borrarbbdd(id);
                     break;
             }
         } else {

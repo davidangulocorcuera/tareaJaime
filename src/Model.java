@@ -141,6 +141,16 @@ public class Model {
             System.out.println("ese id ya existe en la base de datos insert no realizado ");
         }
     }
+    public void borrarbbdd(int id){
+        try {
+            PreparedStatement stmt = conexion.prepareStatement("DELETE FROM personas WHERE id = ? ");
+            stmt.setInt(1,id);
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }
