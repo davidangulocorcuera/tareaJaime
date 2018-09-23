@@ -121,7 +121,7 @@ public class Model {
 
         if (adelante) {
             try (PreparedStatement stmt = conexion.prepareStatement("INSERT INTO personas(ID,Nombre,CaracteristicaUno,CaracteristicaDos,CaracteristicaTres) VALUES (?,?,?,?,?)")) {
-
+                try {
                     int id = Integer.parseInt(cosas.get(0));
                     stmt.setInt(1, id);
                     stmt.setString(2, cosas.get(1));
@@ -130,6 +130,8 @@ public class Model {
                     stmt.setString(5, cosas.get(4));
                     stmt.executeUpdate();
                     System.out.println("insert realizado");
+                } catch (NumberFormatException excepcion) {
+                }
 
 
             } catch (SQLException e) {
@@ -137,19 +139,29 @@ public class Model {
             }
 
 
-        }else{
+        } else {
             System.out.println("ese id ya existe en la base de datos insert no realizado ");
         }
     }
-    public void borrarbbdd(int id){
+
+    public void borrarbbdd(int id) {
         try {
             PreparedStatement stmt = conexion.prepareStatement("DELETE FROM personas WHERE id = ? ");
-            stmt.setInt(1,id);
+            stmt.setInt(1, id);
             stmt.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    public void guardarFichero(){
+        ArrayList<String> cosas = new ArrayList<String>();
+        try {
+            cosas = ficheroLista("src/Persona.txt",cosas);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        escribirBBDD(cosas);
     }
 
 
