@@ -66,13 +66,14 @@ public class Model {
         }
         b.close();
     }
+
     // Guardamos los datos del fichero en una lista para pasarlo a la bbdd
-    public ArrayList<String>  ficheroLista (String fichero,ArrayList<String> cosas) throws FileNotFoundException, IOException {
+    public ArrayList<String> ficheroLista(String fichero, ArrayList<String> cosas) throws FileNotFoundException, IOException {
         String cadena;
         FileReader f = new FileReader(fichero);
         BufferedReader b = new BufferedReader(f);
         while ((cadena = b.readLine()) != null) {
-           cosas.add(cadena);
+            cosas.add(cadena);
         }
         b.close();
         return cosas;
@@ -85,9 +86,9 @@ public class Model {
         try (PreparedStatement stmt = conexion.prepareStatement("SELECT * FROM personas")) {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                System.out.println(rs.getInt("ID") +  " " + rs.getString("Nombre")+
-                        " " + rs.getString("CaracteristicaUno")+  " " + rs.getString("CaracteristicaDos")
-                        +  " " + rs.getString("CaracteristicaTres"));
+                System.out.println(rs.getInt("ID") + " " + rs.getString("Nombre") +
+                        " " + rs.getString("CaracteristicaUno") + " " + rs.getString("CaracteristicaDos")
+                        + " " + rs.getString("CaracteristicaTres"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -97,17 +98,48 @@ public class Model {
     }
 
     public void escribirBBDD(ArrayList<String> cosas) {
-
-
-        try (PreparedStatement stmt = conexion.prepareStatement("INSERT INTO personas(ID,Nombre,CaracteristicaUno,CaracteristicaDos,CaracteristicaTres) VALUES (?,?,?,?,?)")) {
+        // comprobamos que el id no este ya en la base de datos, en ese caso no realizaremos el insert
+        boolean adelante = true;
+        try (PreparedStatement stmt = conexion.prepareStatement("SELECT * FROM personas")) {
             ResultSet rs = stmt.executeQuery();
+            try {
+                int id = Integer.parseInt(cosas.get(0));
+                while (rs.next()) {
+                    if (rs.getInt("ID") == id) {
+                        adelante = false;
+                    }
 
+                }
+            } catch (NumberFormatException excepcion) {
+                System.out.println("el id tiene que ser un numero amigo intentalo de nuevo");
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
 
+        if (adelante) {
+            try (PreparedStatement stmt = conexion.prepareStatement("INSERT INTO personas(ID,Nombre,CaracteristicaUno,CaracteristicaDos,CaracteristicaTres) VALUES (?,?,?,?,?)")) {
+
+                    int id = Integer.parseInt(cosas.get(0));
+                    stmt.setInt(1, id);
+                    stmt.setString(2, cosas.get(1));
+                    stmt.setString(3, cosas.get(2));
+                    stmt.setString(4, cosas.get(3));
+                    stmt.setString(5, cosas.get(4));
+                    stmt.executeUpdate();
+                    System.out.println("insert realizado");
+
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+
+        }else{
+            System.out.println("ese id ya existe en la base de datos insert no realizado ");
+        }
     }
 
 

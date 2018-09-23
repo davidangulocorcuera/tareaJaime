@@ -7,15 +7,18 @@ public class Test extends Model {
 
     public static void main(String[] args) {
         Model app = new Model();
-        System.out.println("Escribe 'leerFichero' para leer el fichero , o 'escribirFichero' para escribir en él, o 'leerbbdd' para mostrar el contenido de la base de datos.");
+        System.out.println("Escribe 'leerFichero' para leer el fichero , o 'escribirFichero' para escribir en él, o " +
+                "'leerbbdd' para mostrar el contenido de la base de datos, o 'escribirbbdd' para realizar una insercion"
+        );
 
 
         Scanner sc = new Scanner(System.in);
         String opcion = sc.next();
         opcion = opcion.toLowerCase();
-        if (opcion.equals("leerfichero") || opcion.equals("escribirfichero") || opcion.equals("salir") || opcion.equals("leerbbdd")) {
+        if (opcion.equals("leerfichero") || opcion.equals("escribirfichero") || opcion.equals("salir") ||
+                opcion.equals("leerbbdd")|| opcion.equals("escribirbbdd")) {
             switch (opcion) {
-                case "escribirFichero":
+                case "escribirfichero":
                     try {
                         sc.nextLine();
                         System.out.println("A continuación escribe lo que deseas que se escriba en el archivo");
